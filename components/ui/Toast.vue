@@ -31,6 +31,7 @@
   </template>
   
   <script setup>
+    import {useToast}  from "/composables/useToast.ts";
   const { toasts, removeToast } = useToast();
   
   // Classes CSS selon le type de toast

@@ -31,6 +31,7 @@
   </template>
   
   <script setup>
+  import {useToast}  from "/composables/useToast.ts";
   // Données factices pour les statistiques
   const stats = [
     { label: 'Abonnements actifs', value: '1,482', change: 12 },

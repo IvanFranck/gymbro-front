@@ -12,7 +12,7 @@
                 <ul class="flex space-x-6">
                     <li v-for="item in navigationItems" :key="item.path">
                         <NuxtLink
-:to="item.path"
+                            :to="item.path"
                             class="text-gray-600 hover:text-primary-500 px-2 py-1 rounded transition"
                             :class="{ 'text-primary-500 font-medium': isActive(item.path) }">
                             {{ item.label }}
@@ -30,10 +30,10 @@ const route = useRoute();
 // Items de navigation
 const navigationItems = [
     { label: 'Accueil', path: '/' },
-    { label: 'Abonnements', path: '/abonnements' },
-    { label: 'Clients', path: '/clients' },
-    { label: 'Revenus', path: '/revenus' },
-    { label: 'Paramètres', path: '/parametres' }
+    { label: 'Abonnements', path: '/memberships' },
+    { label: 'Clients', path: '/customers' },
+    { label: 'Revenus', path: '/incomes' },
+    { label: 'Paramètres', path: '/settings' }
 ];
 
 // Vérifier si un lien est actif
