@@ -13,12 +13,6 @@
       
       <!-- Footer -->
       <LayoutFooter />
-      
-      <!-- Toast Notifications (fixed position) -->
-      <UiToast />
-      
-      <!-- Modal Container (portaled) -->
-      <UiModal />
     </div>
   </template>
   
