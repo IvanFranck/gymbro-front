@@ -7,7 +7,13 @@ export default defineNuxtConfig({
       apiBaseUrl: ''
     }
   },
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  },
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [
