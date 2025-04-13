@@ -1,5 +1,5 @@
-import type { GenericListResponce, GenericListResponceMetadata } from "~/types";
-import type {Service} from "~/types/services"
+import type { GenericListResponce } from "~/types";
+import type { Service } from "~/types/services"
 
 const { fetchServices: getAllServices } = useServices();
 
@@ -8,25 +8,25 @@ export const useServiceStore = defineStore('serviceStore', () => {
     const loading = ref(false);
     const error = ref<string | null>(null)
     const page = ref(1);
-    const limit =  ref(10);
-    
-    async function fetchServices() {
+    const limit = ref(10);
+
+    async function fetchServices(search?: string) {
         loading.value = true
         try {
-            const result = await getAllServices(page.value, limit.value);
+            const result = await getAllServices(page.value, limit.value, search);
             if (result) {
                 services.value = result;
             }
 
         } catch (err) {
             if (err instanceof Error) {
-                error.value =  "Une erreur est survenue lors de la récupération des services"
+                error.value = "Une erreur est survenue lors de la récupération des services"
                 useToast().add({
                     title: error.value,
                     color: "error"
                 })
             }
-        }finally {
+        } finally {
             loading.value = false;
         }
     }

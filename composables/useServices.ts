@@ -4,10 +4,12 @@ import type { Service } from "~/types/services"
 export const useServices = () => {
     async function fetchServices(
         page: number,
-        limit: number
+        limit: number,
+        search?: string,
     ) {
         const { data, error: fetchError } = await useApi<GenericListResponce<Service[]>>('/services', {
             params: {
+                search,
                 page,
                 limit
             }
@@ -16,7 +18,7 @@ export const useServices = () => {
         if (fetchError.value)
             throw fetchError.value
 
-        if(data.value)
+        if (data.value)
             return data.value
     }
 
