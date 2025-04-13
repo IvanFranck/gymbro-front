@@ -1,7 +1,10 @@
 import type { GenericListResponce } from "~/types";
-import type { Service } from "~/types/services"
+import type { CreateServiceDto, Service } from "~/types/services"
 
-const { fetchServices: getAllServices } = useServices();
+const {
+    fetchServices: getAllServices,
+    createService: addService,
+} = useServices();
 
 export const useServiceStore = defineStore('serviceStore', () => {
     const services = ref<GenericListResponce<Service[]>>();
@@ -31,9 +34,34 @@ export const useServiceStore = defineStore('serviceStore', () => {
         }
     }
 
+    async function createService(service: CreateServiceDto) {
+        loading.value = true
+        try {
+            const result = await addService(service);
+            if (result) {
+                console.log("result", result)
+                useToast().add({
+                    title: "Service créé avec succès",
+                    color: "success"
+                });
+                return result;
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                error.value = "Une erreur est survenue lors de la création du service"
+                useToast().add({
+                    title: error.value,
+                    color: "error",
+                })
+            }
+        } finally {
+            loading.value = false;
+        }
+    }
 
     return {
         fetchServices,
+        createService,
         services,
         loading
     }

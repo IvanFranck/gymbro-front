@@ -1,5 +1,5 @@
 import type { GenericListResponce } from "~/types";
-import type { Service } from "~/types/services"
+import type { CreateServiceDto, Service } from "~/types/services"
 
 export const useServices = () => {
     async function fetchServices(
@@ -22,7 +22,23 @@ export const useServices = () => {
             return data.value
     }
 
+    async function createService(
+        service: CreateServiceDto
+    ) {
+        const { data, error: fetchError } = await useApi<GenericListResponce<Service[]>>('/services', {
+            method: "POST",
+            body: service
+        });
+
+        if (fetchError.value)
+            throw fetchError.value
+
+        if (data.value)
+            return data.value
+    }
+
     return {
-        fetchServices
+        fetchServices,
+        createService
     }
 }

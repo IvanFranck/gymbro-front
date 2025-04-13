@@ -8,7 +8,7 @@
           aria-label="Clear input" @click="search = ''" />
       </template>
     </UInput>
-    <UButton color="primary" class="cursor-pointer">Nouveau service</UButton>
+    <UButton color="primary" class="cursor-pointer" @click="toggleModal">Nouveau service</UButton>
   </div>
   <div class="mt-4">
     <UTable ref="table" v-model:pagination="pagination" :loading="servicesStore.loading" loading-color="primary"
@@ -31,6 +31,11 @@
         @update:page="(p) => table?.tableApi?.setPageIndex(p - 1)" />
     </div>
   </div>
+  <UDrawer v-model:open="open" direction="right">
+    <template #content>
+      <component :is="ServiceFormComponent" />
+    </template>
+  </UDrawer>
 </template>
 
 <script lang="ts" setup>
@@ -41,15 +46,21 @@ import type { Service } from '~/types/services';
 import { watchDebounced } from '@vueuse/core';
 
 const search = ref('');
+const open = ref(false);
 const servicesStore = useServiceStore();
 const table = useTemplateRef('table');
 const pagination = ref({
   pageIndex: 0,
   pageSize: 5
 });
+const ServiceFormComponent = resolveComponent('FormService');
 
 async function handleSearch(search: string) {
   await servicesStore.fetchServices(search)
+}
+
+function toggleModal() {
+  open.value = !open.value
 }
 
 function getHeader(column: Column<Service>, label: string) {
