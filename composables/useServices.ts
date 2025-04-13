@@ -25,9 +25,15 @@ export const useServices = () => {
     async function createService(
         service: CreateServiceDto
     ) {
+        const payload = {
+            ...service,
+            capaciteMax: service.capaciteMax === 0 ? null : service.capaciteMax,
+            dureeStandard: service.dureeStandard === 0 ? null : service.dureeStandard,
+        }
+        console.log("payload", payload)
         const { data, error: fetchError } = await useApi<GenericListResponce<Service[]>>('/services', {
             method: "POST",
-            body: service
+            body: payload
         });
 
         if (fetchError.value)

@@ -2,7 +2,7 @@
     <div class="p-6">
         <h3 class="heading-title-2">Créer un service</h3>
         <UForm :schema="CreateServiceSchema" :state="state" class="space-y-4 mt-6" @submit="onSubmit">
-            <UFormField label="Nom" name="nom" class="w-full">
+            <UFormField label="Nom" name="nom" class="w-full" required>
                 <UInput v-model="state.nom" class="w-full" />
             </UFormField>
 
@@ -18,9 +18,11 @@
                 <UInputNumber v-model="state.capaciteMax" :min="0" class="w-full" />
             </UFormField>
 
-            <UButton type="submit" class="mt-4 cursor-pointer" color="primary" size="lg">
-                Enregistrer
-            </UButton>
+            <div class="w-full flex justify-end">
+                <UButton type="submit" class="mt-4 cursor-pointer" color="primary" size="lg">
+                    Enregistrer
+                </UButton>
+            </div>
         </UForm>
     </div>
 </template>
@@ -44,7 +46,6 @@ const state = reactive<Partial<CreateServiceDto>>({
 })
 
 async function onSubmit(event: FormSubmitEvent<CreateServiceDto>) {
-    console.log(event.data)
     const result = await serviceStore.createService(event.data);
     if (result) {
         await serviceStore.fetchServices();

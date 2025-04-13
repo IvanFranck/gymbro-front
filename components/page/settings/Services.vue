@@ -33,7 +33,7 @@
   </div>
   <UDrawer v-model:open="open" direction="right">
     <template #content>
-      <component :is="ServiceFormComponent" />
+      <component :is="ServiceFormComponent" @service-created="toggleModal(false)" />
     </template>
   </UDrawer>
 </template>
@@ -59,7 +59,11 @@ async function handleSearch(search: string) {
   await servicesStore.fetchServices(search)
 }
 
-function toggleModal() {
+function toggleModal(value?: boolean) {
+  if (value) {
+    open.value = value
+    return
+  }
   open.value = !open.value
 }
 
