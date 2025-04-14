@@ -4,6 +4,7 @@ import type { CreateServiceDto, Service } from "~/types/services"
 const {
     fetchServices: getAllServices,
     createService: addService,
+    toggleServiceStatus: changeServiceStatus
 } = useServices();
 
 export const useServiceStore = defineStore('serviceStore', () => {
@@ -12,6 +13,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
     const error = ref<string | null>(null)
     const page = ref(1);
     const limit = ref(10);
+    const serviceToEdit = ref<Service | null>(null);
 
     async function fetchServices(search?: string) {
         loading.value = true
@@ -59,9 +61,40 @@ export const useServiceStore = defineStore('serviceStore', () => {
         }
     }
 
+    async function toggleServiceStatus(serviceId: number, status: boolean) {
+        loading.value = true
+        try {
+            const result = await changeServiceStatus(serviceId, status);
+            if (result) {
+                useToast().add({
+                    title: "Statut du service mis à jour avec succès",
+                    color: "success"
+                });
+                return result;
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                error.value = "Une erreur est survenue lors de la mise à jour du statut du service"
+                useToast().add({
+                    title: error.value,
+                    color: "error",
+                })
+            }
+        } finally {
+            loading.value = false;
+        }
+    }
+
+    function setServiceToEdit(service: Service) {
+        serviceToEdit.value = service;
+    }
+
     return {
         fetchServices,
         createService,
+        setServiceToEdit,
+        toggleServiceStatus,
+        serviceToEdit,
         services,
         loading
     }

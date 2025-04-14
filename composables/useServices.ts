@@ -43,8 +43,28 @@ export const useServices = () => {
             return data.value
     }
 
+    async function toggleServiceStatus(
+        serviceId: number,
+        status: boolean
+    ) {
+        let url = `/services/${serviceId}/activate`
+        if (!status) {
+            url = `/services/${serviceId}/deactivate`
+        }
+        const { data, error: fetchError } = await useApi<GenericListResponce<Service[]>>(url, {
+            method: "PATCH",
+        });
+
+        if (fetchError.value)
+            throw fetchError.value
+
+        if (data.value)
+            return data.value
+    }
+
     return {
         fetchServices,
-        createService
+        createService,
+        toggleServiceStatus
     }
 }

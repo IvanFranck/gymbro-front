@@ -15,6 +15,11 @@
       loading-animation="carousel" :data="servicesStore.services?.data" :pagination-options="{
         getPaginationRowModel: getPaginationRowModel()
       }" :columns="columns">
+      <template #action-cell="{ row }">
+        <UDropdownMenu :items="getDropDownActions(row.original)">
+          <UButton icon="i-lucide-ellipsis-vertical" color="neutral" variant="ghost" aria-label="Actions" />
+        </UDropdownMenu>
+      </template>
       <template #empty>
         <p class="mb-4">Aucun service trouvé. Veillez recharger la page ou en créer un.</p>
         <UButton color="primary" class="cursor-pointer">Nouveau service</UButton>
@@ -40,7 +45,7 @@
 
 <script lang="ts" setup>
 import { UBadge, UButton, UDropdownMenu } from '#components';
-import type { TableColumn } from '@nuxt/ui';
+import type { DropdownMenuItem, TableColumn } from '@nuxt/ui';
 import { getPaginationRowModel, type Column } from '@tanstack/vue-table';
 import type { Service } from '~/types/services';
 import { watchDebounced } from '@vueuse/core';
@@ -122,6 +127,31 @@ function getHeader(column: Column<Service>, label: string) {
   )
 }
 
+function getDropDownActions(service: Service): DropdownMenuItem[][] {
+  return [
+    [
+      {
+        label: `${service.actif ? 'Désactiver' : 'Activer'}`,
+        icon: service.actif ? 'i-lucide-x' : 'i-lucide-check',
+        onSelect: async () => {
+          await servicesStore.toggleServiceStatus(service.id, !service.actif);
+          await servicesStore.fetchServices();
+        }
+      }
+    ],
+    [
+      {
+        label: 'Modifier',
+        icon: 'i-lucide-edit',
+        onSelect: () => {
+          servicesStore.setServiceToEdit(service);
+          open.value = true;
+        }
+      }
+    ]
+  ]
+}
+
 const columns: TableColumn<Service>[] = [
   {
     accessorKey: "id",
@@ -147,6 +177,9 @@ const columns: TableColumn<Service>[] = [
 
       return h(UBadge, { class: 'capitalize', color, variant: 'subtle' }, () => status)
     }
+  },
+  {
+    id: 'action'
   }
 ]
 
