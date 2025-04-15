@@ -1,3 +1,4 @@
+import { SERVICES } from "~/constants/api-routes";
 import type { GenericListResponce } from "~/types";
 import type { CreateServiceDto, Service, UpdateServiceDto } from "~/types/services"
 
@@ -7,7 +8,7 @@ export const useServices = () => {
         limit: number,
         search?: string,
     ) {
-        const { data, error: fetchError } = await useApi<GenericListResponce<Service[]>>('/services', {
+        const { data, error: fetchError } = await useApi<GenericListResponce<Service[]>>(SERVICES, {
             params: {
                 search,
                 page,
@@ -30,7 +31,7 @@ export const useServices = () => {
             capaciteMax: service.capaciteMax === 0 ? null : service.capaciteMax,
             dureeStandard: service.dureeStandard === 0 ? null : service.dureeStandard,
         }
-        const { data, error: fetchError } = await useApi<Service>('/services', {
+        const { data, error: fetchError } = await useApi<Service>(SERVICES, {
             method: "POST",
             body: payload
         });
@@ -52,7 +53,7 @@ export const useServices = () => {
             dureeStandard: service.dureeStandard === 0 ? null : service.dureeStandard,
         }
 
-        const { data, error: fetchError } = await useApi<Service>(`/services/${serviceId}`, {
+        const { data, error: fetchError } = await useApi<Service>(`${SERVICES}/${serviceId}`, {
             method: "PATCH",
             body: payload
         });
@@ -84,7 +85,7 @@ export const useServices = () => {
     }
 
     async function deleteService(id: number) {
-        const { error: fetchError } = await useApi<Service>(`/services/${id}`, {
+        const { error: fetchError } = await useApi<Service>(`${SERVICES}/${id}`, {
             method: "DELETE",
         });
 
