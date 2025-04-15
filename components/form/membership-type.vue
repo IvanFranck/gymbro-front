@@ -11,19 +11,18 @@
             <UFormField label="Prix" name="prix" class="w-full">
                 <UInputNumber 
                     v-model="state.prix" 
-                    :step="1000" :min="1"
+                    :step="1000" :min="1000"
                     size="xl" 
                     :format-options="{
                         style: 'currency',
                         currency: 'XAF',
                         currencyDisplay: 'symbol',
-                        // currencySign: 'accounting'
                     }" 
                 class="w-full" 
                 />
             </UFormField>
             
-            <UFormField label="Durée de l'abonnment" name="prix" class="w-full">
+            <UFormField label="Durée de l'abonnment" description="Compté en jours. Exemple: 30 jours pour 1 mois" name="prix" class="w-full">
                 <UInputNumber v-model="state.dureeJours" :min="1" size="xl" class="w-full" />
             </UFormField>
 
@@ -61,7 +60,7 @@ const membershipTypeStore = useMembershipTypeStore();
 
 const state = reactive<Partial<MembershipTypeDto>>(membershipTypeStore.membershipTypeToEdit || {
     nom: '',
-    prix: 1,
+    prix: 1000,
     dureeJours: 1,
     niveau: '',
     description: '',

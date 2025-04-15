@@ -30,7 +30,7 @@ const settingsNavigation = [
     },
     {
         id: 2,
-        title: "Types d'Abonnement",
+        title: "Offres d'Abonnement",
         component: resolveComponent('PageSettingsMembershipsType'),
     },
     {
