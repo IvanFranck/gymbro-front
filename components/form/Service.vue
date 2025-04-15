@@ -42,8 +42,7 @@
 <script setup lang="ts">
 import { USwitch } from '#components';
 import type { FormSubmitEvent } from '@nuxt/ui';
-import type { GenericListResponce } from '~/types';
-import { CreateServiceSchema, type CreateServiceDto, type Service } from '~/types/services';
+import { CreateServiceSchema, type CreateServiceDto } from '~/types/services';
 
 const emits = defineEmits<{
     (e: 'close'): void;
