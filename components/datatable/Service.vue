@@ -159,6 +159,22 @@ const columns: TableColumn<Service>[] = [
     cell: ({ row }) => row.getValue('description')
   },
   {
+    accessorKey: 'capaciteMax',
+    header: ({ column }) => getHeader(column, 'Capacité max'),
+    cell: ({ row }) => {
+      const value = row.getValue('capaciteMax');
+      return value ?? '/'
+    }
+  },
+  {
+    accessorKey: 'dureeStandard',
+    header: ({ column }) => getHeader(column, 'Durée standard'),
+    cell: ({ row }) => {
+      const value = row.getValue('dureeStandard');
+      return value ?? '/'
+    }
+  },
+  {
     accessorKey: "actif",
     header: ({ column }) => getHeader(column, 'Statut'),
     cell: ({ row }) => {
