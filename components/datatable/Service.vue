@@ -10,7 +10,7 @@
       </template>
       <template #empty>
         <p class="mb-4">Aucun service trouvé. Veillez recharger la page ou en créer un.</p>
-        <UButton color="primary" class="cursor-pointer">Nouveau service</UButton>
+        <UButton color="primary" class="cursor-pointer" @click="emits('update:isModalOpen', true)">Nouveau service</UButton>
       </template>
 
       <template #loading>
@@ -32,7 +32,7 @@ import { getPaginationRowModel, type Column } from '@tanstack/vue-table';
 import type { Service } from '~/types/services';
 
 defineProps<{
-    isModalOpen: boolean
+  isModalOpen: boolean
 }>();
 
 const emits = defineEmits(['update:isModalOpen'])

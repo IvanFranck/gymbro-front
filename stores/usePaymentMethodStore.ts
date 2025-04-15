@@ -1,4 +1,3 @@
-import type { GenericListResponce } from "~/types"
 import type { PaymentMethod, PaymentMethodDto } from "~/types/payment-methods"
 
 const {
@@ -9,17 +8,15 @@ const {
 } = usePaymentMethod();
 
 export const usePaymentMethodStore = defineStore('paymentMethodStore', () => {
-    const paymentMethods = ref <GenericListResponce<PaymentMethod[]>>();
+    const paymentMethods = ref <PaymentMethod[]>();
     const loading = ref(false);
     const error = ref<string | null>();
-    const page = ref(1);
-    const limit = ref(10);
     const paymentMethodToEdit = ref<PaymentMethod | null>(null);
 
     async function fetchPaymentMethods(search?: string) {
         loading.value = true
         try {
-            const result = await handleFetchPaymentMethods(page.value, limit.value, search);
+            const result = await handleFetchPaymentMethods(search);
             if (result) {
                 paymentMethods.value = result;
             }

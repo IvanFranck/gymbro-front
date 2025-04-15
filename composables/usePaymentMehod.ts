@@ -4,15 +4,11 @@ import type { PaymentMethod, PaymentMethodDto } from "~/types/payment-methods";
 
 export const usePaymentMethod = () => {
     async function fetchPaymentMethods(
-        page: number,
-        limit: number,
         search?: string
     ) {
-        const { data, error: fetchError } = await useApi<GenericListResponce<PaymentMethod[]>>(PAYMENT_METHODS, {
+        const { data, error: fetchError } = await useApi<PaymentMethod[]>(PAYMENT_METHODS, {
             params: {
                 search,
-                page,
-                limit,
                 actif: true
             }
         });
@@ -20,8 +16,9 @@ export const usePaymentMethod = () => {
         if (fetchError.value)
             throw fetchError.value
 
-        if (data.value)
+        if (data.value) {
             return data.value
+        }
     }
 
     async function createPaymentMethod(
