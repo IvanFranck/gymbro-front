@@ -1,1 +1,22 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+    --text-heading-1: 34px;
+    --text-heading-1: 28px;
+}
+
+@layer components {
+
+    .heading-title-1 {
+        font-size: var(--text-heading-1);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-gray-950);
+    }
+
+    .heading-title-2 {
+        font-size: var(--text-heading-2);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-gray-950);
+    }
+}
