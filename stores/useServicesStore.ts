@@ -27,7 +27,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
 
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la récupération des services"
+                error.value = "Une erreur est survenue lors de la récupération des services. Veillez actualiser la page"
                 useToast().add({
                     title: error.value,
                     color: "error"
@@ -51,7 +51,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
             }
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la création du service"
+                error.value = "Une erreur est survenue lors de la création du service. Veillez réessayer"
                 useToast().add({
                     title: error.value,
                     color: "error",
@@ -75,7 +75,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
             }
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la modification du service"
+                error.value = "Une erreur est survenue lors de la modification du service. Veillez réessayer"
                 useToast().add({
                     title: error.value,
                     color: "error",
