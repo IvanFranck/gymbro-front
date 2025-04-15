@@ -35,6 +35,7 @@ async function handleSearch(search: string | number) {
 
 function toggleModal() {
   open.value = !open.value
+  serviceStore.setServiceToEdit(null);
 }
 
 function closeModal(){

@@ -43,7 +43,6 @@ export const useServiceStore = defineStore('serviceStore', () => {
         try {
             const result = await addService(service);
             if (result) {
-                console.log("result", result)
                 useToast().add({
                     title: "Service créé avec succès",
                     color: "success"
@@ -68,7 +67,6 @@ export const useServiceStore = defineStore('serviceStore', () => {
         try {
             const result = await editService(service, id);
             if (result) {
-                console.log("result", result);
                 useToast().add({
                     title: "Service modifié avec succès",
                     color: "success"
