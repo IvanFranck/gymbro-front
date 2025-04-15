@@ -15,9 +15,9 @@
                     size="xl" 
                     :format-options="{
                         style: 'currency',
-                        currency: 'Fcfa',
-                        currencyDisplay: 'code',
-                        currencySign: 'accounting'
+                        currency: 'XAF',
+                        currencyDisplay: 'symbol',
+                        // currencySign: 'accounting'
                     }" 
                 class="w-full" 
                 />
@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { USelect, USwitch } from '#components';
+import { USelect } from '#components';
 import type { FormSubmitEvent } from '@nuxt/ui';
 import type { MembershipTypeDto } from '~/types/membership-types';
 import { CreateServiceSchema, type CreateServiceDto, type Service } from '~/types/services';
