@@ -1,10 +1,11 @@
 import type { GenericListResponce } from "~/types";
-import type { CreateServiceDto, Service } from "~/types/services"
+import type { CreateServiceDto, Service, UpdateServiceDto } from "~/types/services"
 
 const {
     fetchServices: getAllServices,
     createService: addService,
-    toggleServiceStatus: changeServiceStatus
+    toggleServiceStatus: changeServiceStatus,
+    updateService: editService
 } = useServices();
 
 export const useServiceStore = defineStore('serviceStore', () => {
@@ -36,7 +37,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
         }
     }
 
-    async function createService(service: CreateServiceDto) {
+    async function createService(service: CreateServiceDto): Promise<Service | undefined> {
         loading.value = true
         try {
             const result = await addService(service);
@@ -51,6 +52,31 @@ export const useServiceStore = defineStore('serviceStore', () => {
         } catch (err) {
             if (err instanceof Error) {
                 error.value = "Une erreur est survenue lors de la création du service"
+                useToast().add({
+                    title: error.value,
+                    color: "error",
+                })
+            }
+        } finally {
+            loading.value = false;
+        }
+    }
+
+    async function updateService(service: UpdateServiceDto, id: number): Promise<Service | undefined> {
+        loading.value = true;
+        try {
+            const result = await editService(service, id);
+            if (result) {
+                console.log("result", result);
+                useToast().add({
+                    title: "Service modifié avec succès",
+                    color: "success"
+                });
+                return result;
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                error.value = "Une erreur est survenue lors de la modification du service"
                 useToast().add({
                     title: error.value,
                     color: "error",
@@ -85,13 +111,14 @@ export const useServiceStore = defineStore('serviceStore', () => {
         }
     }
 
-    function setServiceToEdit(service: Service) {
+    function setServiceToEdit(service: Service | null) {
         serviceToEdit.value = service;
     }
 
     return {
         fetchServices,
         createService,
+        updateService,
         setServiceToEdit,
         toggleServiceStatus,
         serviceToEdit,

@@ -1,6 +1,8 @@
 <template>
     <div class="p-6">
-        <h3 class="heading-title-2">Créer un service</h3>
+        <h3 class="heading-title-2">
+            {{ Boolean(serviceStore.serviceToEdit) ? "Modifier ce service" : "Créer un service" }}
+        </h3>
         <UForm :schema="CreateServiceSchema" :state="state" class="space-y-4 mt-6" @submit="onSubmit">
             <UFormField label="Nom" name="nom" class="w-full" required>
                 <UInput v-model="state.nom" class="w-full" />
@@ -18,9 +20,19 @@
                 <UInputNumber v-model="state.capaciteMax" :min="0" class="w-full" />
             </UFormField>
 
-            <div class="w-full flex justify-end">
+            <UFormField v-if="serviceStore.serviceToEdit" name="actif" class="w-full">
+                <p class="flex gap-2 items-center">
+                    <USwitch v-model="state.actif" />
+                    <span>Activer</span>
+                </p>
+            </UFormField>
+
+            <div class="w-full flex justify-between">
+                <UButton @click="emits('close')" class="mt-4 cursor-pointer" color="neutral" size="lg">
+                    Annuler
+                </UButton>
                 <UButton type="submit" class="mt-4 cursor-pointer" color="primary" size="lg">
-                    Enregistrer
+                    {{ Boolean(serviceStore.serviceToEdit) ? "Modifier" : "Enregistrer" }}
                 </UButton>
             </div>
         </UForm>
@@ -28,16 +40,18 @@
 </template>
 
 <script setup lang="ts">
+import { USwitch } from '#components';
 import type { FormSubmitEvent } from '@nuxt/ui';
-import { CreateServiceSchema, type CreateServiceDto } from '~/types/services';
+import type { GenericListResponce } from '~/types';
+import { CreateServiceSchema, type CreateServiceDto, type Service } from '~/types/services';
 
 const emits = defineEmits<{
-    (e: 'serviceCreated'): void;
+    (e: 'close'): void;
 }>();
 
 const serviceStore = useServiceStore();
 
-const state = reactive<Partial<CreateServiceDto>>({
+const state = reactive<Partial<CreateServiceDto>>(serviceStore.serviceToEdit || {
     nom: '',
     description: '',
     dureeStandard: 0,
@@ -46,10 +60,14 @@ const state = reactive<Partial<CreateServiceDto>>({
 })
 
 async function onSubmit(event: FormSubmitEvent<CreateServiceDto>) {
-    const result = await serviceStore.createService(event.data);
+    const { serviceToEdit } = serviceStore;
+    const result = serviceToEdit 
+        ? await serviceStore.updateService(event.data, serviceToEdit.id) 
+        : await serviceStore.createService(event.data);
+
     if (result) {
         await serviceStore.fetchServices();
-        emits('serviceCreated');
+        emits('close');
     }
 }
 
