@@ -83,10 +83,21 @@ export const useServices = () => {
             return data.value
     }
 
+    async function deleteService(id: number) {
+        const { error: fetchError } = await useApi<Service>(`/services/${id}`, {
+            method: "DELETE",
+        });
+
+        if (fetchError.value)
+            throw fetchError.value
+
+    }
+
     return {
         fetchServices,
         createService,
         updateService,
+        deleteService,
         toggleServiceStatus
     }
 }

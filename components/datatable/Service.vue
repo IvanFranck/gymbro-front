@@ -105,6 +105,7 @@ function getDropDownActions(service: Service): DropdownMenuItem[][] {
       {
         label: `${service.actif ? 'Désactiver' : 'Activer'}`,
         icon: service.actif ? 'i-lucide-x' : 'i-lucide-check',
+        class: 'cursor-pointer',
         onSelect: async () => {
           await servicesStore.toggleServiceStatus(service.id, !service.actif);
           await servicesStore.fetchServices();
@@ -115,6 +116,7 @@ function getDropDownActions(service: Service): DropdownMenuItem[][] {
       {
         label: 'Modifier',
         icon: 'i-lucide-edit',
+        class: 'cursor-pointer',
         onSelect: () => {
           servicesStore.setServiceToEdit({
             ...service,
@@ -124,6 +126,18 @@ function getDropDownActions(service: Service): DropdownMenuItem[][] {
           emits('update:isModalOpen', true);
         }
       }
+    ],
+    [
+        {
+            label: 'Supprimer',
+            icon: 'i-lucide-trash',
+            color: 'error',
+            class: 'cursor-pointer',
+            onSelect: async () => {
+                await servicesStore.deleteService(service.id);
+                await servicesStore.fetchServices();
+            }
+        }
     ]
   ]
 }

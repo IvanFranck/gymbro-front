@@ -15,19 +15,18 @@
   </div>
   <UModal @close="handleCloseModal" v-model:open="open">
     <template #content>
-      <component :is="ServiceFormComponent" @close="closeModal" />
+      <FormService @close="closeModal" />
     </template>
   </UModal>
 </template>
 
 <script lang="ts" setup>
-import { DatatableService, UButton } from '#components';
+import { DatatableService, FormService, UButton } from '#components';
 import { watchDebounced } from '@vueuse/core';
 
 const search = ref('');
 const open = ref(false);
 const serviceStore = useServiceStore();
-const ServiceFormComponent = resolveComponent('FormService');
 
 async function handleSearch(search: string | number) {
   if (typeof(search) === 'string')

@@ -5,7 +5,8 @@ const {
     fetchServices: getAllServices,
     createService: addService,
     toggleServiceStatus: changeServiceStatus,
-    updateService: editService
+    updateService: editService,
+    deleteService: handleDeleteService,
 } = useServices();
 
 export const useServiceStore = defineStore('serviceStore', () => {
@@ -87,6 +88,27 @@ export const useServiceStore = defineStore('serviceStore', () => {
         }
     }
 
+    async function deleteService(id: number) {
+        loading.value = true;
+        try {
+            await handleDeleteService(id);
+            useToast().add({
+                title: "Service supprimé",
+                color: "success"
+            });
+        } catch (err) {
+            if (err instanceof Error) {
+                error.value = "Une erreur est survenue lors de la suppression du service. Veillez réessayer"
+                useToast().add({
+                    title: error.value,
+                    color: "error",
+                })
+            }
+        } finally {
+            loading.value = false;
+        }
+    }
+
     async function toggleServiceStatus(serviceId: number, status: boolean) {
         loading.value = true
         try {
@@ -119,6 +141,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
         fetchServices,
         createService,
         updateService,
+        deleteService,
         setServiceToEdit,
         toggleServiceStatus,
         serviceToEdit,
