@@ -26,10 +26,10 @@
 </template>
 
 <script lang="ts" setup>
-import { UButton, UDropdownMenu } from '#components';
+import { UBadge, UButton, UDropdownMenu } from '#components';
 import type { DropdownMenuItem, TableColumn } from '@nuxt/ui';
 import { getPaginationRowModel, type Column } from '@tanstack/vue-table';
-import type { MembershipType } from '~/types/membership-types';
+import type { MembershipTypeList, MembershipTypeService } from '~/types/membership-types';
 
 defineProps<{
   isModalOpen: boolean
@@ -44,7 +44,7 @@ const pagination = ref({
   pageSize: 5
 });
 
-function getHeader(column: Column<MembershipType>, label: string) {
+function getHeader(column: Column<MembershipTypeList>, label: string) {
   const isSorted = column.getIsSorted()
 
   return h(
@@ -99,7 +99,7 @@ function getHeader(column: Column<MembershipType>, label: string) {
   )
 }
 
-function getDropDownActions(membershipType: MembershipType): DropdownMenuItem[][] {
+function getDropDownActions(membershipType: MembershipTypeList): DropdownMenuItem[][] {
   return [
     [
       {
@@ -127,7 +127,7 @@ function getDropDownActions(membershipType: MembershipType): DropdownMenuItem[][
   ]
 }
 
-const columns: TableColumn<MembershipType>[] = [
+const columns: TableColumn<MembershipTypeList>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => getHeader(column, 'id'),
@@ -136,7 +136,10 @@ const columns: TableColumn<MembershipType>[] = [
   {
     accessorKey: "nom",
     header: ({ column }) => getHeader(column, 'Nom'),
-    cell: ({ row }) => row.getValue('nom')
+    cell: ({ row }) => {
+      const value = row.getValue('nom');
+      return h('p', {class: "max-w-32 text-wrap", }, `${value}`);
+    }
   },
   {
     accessorKey: 'prix',
@@ -158,9 +161,25 @@ const columns: TableColumn<MembershipType>[] = [
     cell: ({ row }) => row.getValue('niveau')
   },
   {
+    accessorKey: 'services',
+    header: ({ column }) => getHeader(column, 'Services associés'),
+    cell: ({ row }) => {
+      const services: MembershipTypeService[] = row.getValue('services');
+      return h('div', { class: 'flex gap-2 flex-wrap'}, services.map(item => {
+        const isActive = item.service.actif;
+        if(!isActive) return;
+        return h(UBadge, { class: 'capitalize', color: 'neutral', variant: 'subtle' }, ()=>item.service.nom)
+      }
+      ))
+    }
+  },
+  {
     accessorKey: "description",
     header: ({ column }) => getHeader(column, 'Description'),
-    cell: ({ row }) => row.getValue('description')
+    cell: ({ row }) => {
+      const value = row.getValue('description');
+      return h('p', {class: "max-w-40 text-wrap", }, `${value}`);
+    }
   },
   {
     id: 'action'

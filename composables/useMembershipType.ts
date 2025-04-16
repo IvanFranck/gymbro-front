@@ -1,6 +1,6 @@
-import { MEMBERSHIP_TYPES } from "~/constants/api-routes";
+import { MEMBERSHIP_TYPES, MEMBERSHIP_TYPES_SERVICES } from "~/constants/api-routes";
 import type { GenericListResponce } from "~/types";
-import type { MembershipType, MembershipTypeDto } from "~/types/membership-types";
+import type { MembershipType, MembershipTypeDto, MembershipTypeList } from "~/types/membership-types";
 
 export const useMembershipType = () => {
     async function handleFetchMembershipTypes(
@@ -8,7 +8,7 @@ export const useMembershipType = () => {
         limit: number,
         search?: string,
     ) {
-        const { data, error: fetchError } = await useApi<GenericListResponce<MembershipType[]>>(MEMBERSHIP_TYPES, {
+        const { data, error: fetchError } = await useApi<GenericListResponce<MembershipTypeList[]>>(MEMBERSHIP_TYPES, {
             params: {
                 search,
                 page,
@@ -28,7 +28,7 @@ export const useMembershipType = () => {
     async function handleCreateMembershipType(
         payload: MembershipTypeDto
     ) {
-        const { data, error: fetchError } = await useApi<MembershipType>(MEMBERSHIP_TYPES, {
+        const { data, error: fetchError } = await useApi<MembershipTypeList>(MEMBERSHIP_TYPES, {
             method: "POST",
             body: payload
         });
@@ -44,7 +44,7 @@ export const useMembershipType = () => {
         payload: MembershipTypeDto,
         id: number
     ) {
-        const { data, error: fetchError } = await useApi<MembershipType>(`${MEMBERSHIP_TYPES}/${id}`, {
+        const { data, error: fetchError } = await useApi<MembershipTypeList>(`${MEMBERSHIP_TYPES}/${id}`, {
             method: "PATCH",
             body: payload
         });
@@ -57,19 +57,28 @@ export const useMembershipType = () => {
     }
 
     async function handleDeleteMembershipType(id: number) {
-        const { error: fetchError } = await useApi<MembershipType>(`${MEMBERSHIP_TYPES}/${id}/deactivate`, {
+        const { error: fetchError } = await useApi<MembershipTypeList>(`${MEMBERSHIP_TYPES}/${id}/deactivate`, {
             method: "PATCH",
         });
 
         if (fetchError.value)
             throw fetchError.value
+    }
 
+    async function handleGetServicesByMembershipTypeId(id: number) {
+        const { error: fetchError } = await useApi<MembershipTypeList>(`${MEMBERSHIP_TYPES_SERVICES}/${id}`, {
+            method: "GET",
+        });
+
+        if (fetchError.value)
+            throw fetchError.value
     }
 
     return {
         handleCreateMembershipType,
         handleDeleteMembershipType,
         handleFetchMembershipTypes,
-        handleUpdateMembershipType
+        handleUpdateMembershipType,
+        handleGetServicesByMembershipTypeId
     }
 }

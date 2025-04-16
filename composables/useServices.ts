@@ -12,7 +12,8 @@ export const useServices = () => {
             params: {
                 search,
                 page,
-                limit
+                limit, 
+                actif: true
             }
         });
 
@@ -65,28 +66,9 @@ export const useServices = () => {
             return data.value
     }
 
-    async function toggleServiceStatus(
-        serviceId: number,
-        status: boolean
-    ) {
-        let url = `/services/${serviceId}/activate`
-        if (!status) {
-            url = `/services/${serviceId}/deactivate`
-        }
-        const { data, error: fetchError } = await useApi<GenericListResponce<Service[]>>(url, {
-            method: "PATCH",
-        });
-
-        if (fetchError.value)
-            throw fetchError.value
-
-        if (data.value)
-            return data.value
-    }
-
     async function deleteService(id: number) {
-        const { error: fetchError } = await useApi<Service>(`${SERVICES}/${id}`, {
-            method: "DELETE",
+        const { error: fetchError } = await useApi<Service>(`${SERVICES}/${id}/deactivate`, {
+            method: "PATCH",
         });
 
         if (fetchError.value)
@@ -99,6 +81,5 @@ export const useServices = () => {
         createService,
         updateService,
         deleteService,
-        toggleServiceStatus
     }
 }

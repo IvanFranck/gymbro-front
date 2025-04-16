@@ -3,31 +3,35 @@
         <h3 class="heading-title-2">
             {{ Boolean(membershipTypeStore.membershipTypeToEdit) ? "Modifier l'offre" : "Créer une nouvelle offre d'abonnement" }}
         </h3>
-        <UForm :schema="CreateServiceSchema" :state="state" class="space-y-4 mt-6" @submit="onSubmit">
+        <UForm :schema="CreateServiceSchema" :state="state" class="space-y-8 mt-6" @submit="onSubmit">
             <UFormField label="Nom" name="nom" class="w-full" required>
                 <UInput v-model="state.nom" class="w-full" />
             </UFormField>
             
-            <UFormField label="Prix" name="prix" class="w-full">
+            <UFormField label="Prix" name="prix" class="w-full" required>
                 <UInputNumber 
                     v-model="state.prix" 
                     :step="1000" :min="1000"
-                    size="xl" 
+                    size="lg" 
                     :format-options="{
                         style: 'currency',
                         currency: 'XAF',
                         currencyDisplay: 'symbol',
                     }" 
-                class="w-full" 
+                    class="w-full" 
                 />
             </UFormField>
             
-            <UFormField label="Durée de l'abonnment" description="Compté en jours. Exemple: 30 jours pour 1 mois" name="prix" class="w-full">
-                <UInputNumber v-model="state.dureeJours" :min="1" size="xl" class="w-full" />
+            <UFormField label="Durée de l'abonnment" description="Compté en jours. Exemple: 30 jours pour 1 mois" name="prix" class="w-full" required>
+                <UInputNumber v-model="state.dureeJours" :min="1" size="lg" class="w-full"/>
             </UFormField>
 
-            <UFormField label="Niveau" name="niveau" class="w-full" required>
-                <USelect v-model="state.niveau" :items="membershipLevels" size="xl" class="w-full" />
+            <UFormField label="Services associés" name="services" class="w-full" required>
+                <USelect v-model="state.services" multiple :items="servicesOptions" size="lg" class="w-full"/>
+            </UFormField>
+
+            <UFormField label="Niveau" name="niveau" class="w-full" >
+                <USelect v-model="state.niveau" :items="membershipLevels" size="lg" class="w-full" />
             </UFormField>
 
             <UFormField label="Description" name="description" class="w-full">
@@ -50,23 +54,32 @@
 import { USelect } from '#components';
 import type { FormSubmitEvent } from '@nuxt/ui';
 import type { MembershipTypeDto } from '~/types/membership-types';
-import { CreateServiceSchema, type CreateServiceDto, type Service } from '~/types/services';
+import { CreateServiceSchema } from '~/types/services';
 
 const emits = defineEmits<{
     (e: 'close'): void;
 }>();
 
 const membershipTypeStore = useMembershipTypeStore();
+const serviceStore = useServiceStore();
 
-const state = reactive<Partial<MembershipTypeDto>>(membershipTypeStore.membershipTypeToEdit || {
+const state = reactive<MembershipTypeDto>(membershipTypeStore.membershipTypeToEdit || {
     nom: '',
     prix: 1000,
     dureeJours: 1,
     niveau: '',
     description: '',
     actif: true,
+    services: []
 })
-const membershipLevels = ref(['Classic', 'Medium', 'Premium']);
+const membershipLevels = ref(['Basic', 'Standard', 'Premium']);
+const servicesOptions = computed(()=> {
+    const services = serviceStore.services?.data
+    return services?.map((service) => ({
+        label: service.nom,
+        value: service.id
+    }))
+})
 
 async function onSubmit(event: FormSubmitEvent<MembershipTypeDto>) {
     const { membershipTypeToEdit } = membershipTypeStore;
@@ -79,5 +92,7 @@ async function onSubmit(event: FormSubmitEvent<MembershipTypeDto>) {
         emits('close');
     }
 }
+
+await serviceStore.fetchServices(1, 100);
 
 </script>

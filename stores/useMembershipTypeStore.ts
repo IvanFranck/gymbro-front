@@ -1,5 +1,5 @@
 import type { GenericListResponce } from "~/types";
-import type { MembershipType, MembershipTypeDto } from "~/types/membership-types";
+import type { MembershipType, MembershipTypeDto, MembershipTypeList } from "~/types/membership-types";
 
 const {
     handleCreateMembershipType,
@@ -9,7 +9,7 @@ const {
 } = useMembershipType();
 
 export const useMembershipTypeStore = defineStore('membershipTypeStore', () => {
-    const membershipTypes = ref<GenericListResponce<MembershipType[]>>();
+    const membershipTypes = ref<GenericListResponce<MembershipTypeList[]>>();
     const loading = ref(false);
     const error = ref<string | null>(null)
     const page = ref(1);
@@ -37,7 +37,7 @@ export const useMembershipTypeStore = defineStore('membershipTypeStore', () => {
         }
     }
 
-    async function createMembershipType(membershipType: MembershipTypeDto): Promise<MembershipType | undefined> {
+    async function createMembershipType(membershipType: MembershipTypeDto): Promise<MembershipTypeList | undefined> {
         loading.value = true
         try {
             const result = await handleCreateMembershipType(membershipType);
@@ -61,7 +61,7 @@ export const useMembershipTypeStore = defineStore('membershipTypeStore', () => {
         }
     }
 
-    async function updateMembershipType(membershipType: MembershipTypeDto, id: number): Promise<MembershipType | undefined> {
+    async function updateMembershipType(membershipType: MembershipTypeDto, id: number): Promise<MembershipTypeList | undefined> {
         loading.value = true;
         try {
             const result = await handleUpdateMembershipType(membershipType, id);
@@ -107,8 +107,17 @@ export const useMembershipTypeStore = defineStore('membershipTypeStore', () => {
     }
 
 
-    function setMembershipTypeToEdit(value: MembershipType | null) {
-        membershipTypeToEdit.value = value;
+    function setMembershipTypeToEdit(value: MembershipTypeList | null) {
+        if (value) {
+            const { services, ...others} = value;
+            
+            membershipTypeToEdit.value = {
+                ...others,
+                services: services.map(item => item.service.id)
+            };
+        }else{
+            membershipTypeToEdit.value = null;
+        }
     }
 
     return {
