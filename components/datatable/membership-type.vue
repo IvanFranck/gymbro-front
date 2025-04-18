@@ -9,8 +9,8 @@
       </UDropdownMenu>
     </template>
     <template #empty>
-      <p class="mb-4">Aucune offre trouvée. Veillez recharger la page ou en créer une.</p>
-      <UButton color="primary" class="cursor-pointer" @click="emits('update:isModalOpen', true)">Nouvelle offre
+      <p class="mb-4">Aucun type d'offre trouvé. Veillez recharger la page ou en créer une.</p>
+      <UButton color="primary" class="cursor-pointer" @click="emits('update:isModalOpen', true)">Nouveau type d'offre
       </UButton>
     </template>
 

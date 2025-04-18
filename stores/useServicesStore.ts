@@ -16,7 +16,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
     const limit = ref(10);
     const serviceToEdit = ref<Service | null>(null);
 
-    async function fetchServices(p?: number, l?: number, search?: string) {
+    async function fetchServices({ p, l, search }: { p?: number, l?: number, search?: string }) {
         loading.value = true
         try {
             const result = await getAllServices(p ?? page.value, l ?? limit.value, search);
