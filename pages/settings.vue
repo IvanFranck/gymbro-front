@@ -34,6 +34,11 @@ const settingsNavigation = [
         component: resolveComponent('PageSettingsMembershipsType'),
     },
     {
+        id: 5,
+        title: "Grille des Prix",
+        component: resolveComponent('PageSettingsPriceList'),
+    },
+    {
         id: 3,
         title: "Méthodes de Paiement",
         component: resolveComponent('PageSettingsPaymentMethods'),
