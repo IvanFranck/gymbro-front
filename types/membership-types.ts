@@ -11,25 +11,19 @@ export type MembershipTypeService = {
 export interface MembershipType {
     id: number,
     nom: string,
-    niveau: string,
-    dureeJours: number,
-    prix: number,
     description: string,
     actif: boolean,
+    services: number[]
     createdAt: string,
     updatedAt: string,
-    services: number[]
 }
 
-export interface MembershipTypeList extends Omit<MembershipType, 'services'>{
+export interface MembershipTypeList extends Omit<MembershipType, 'services'> {
     services: MembershipTypeService[];
 }
 
 export const MembershipTypeSchema = z.object({
     nom: z.string().min(1, { message: "Le nom est requis" }),
-    dureeJours: z.number().min(1, {message: 'La durée doit être au supérieure à 1 jour'}),
-    prix: z.number().min(1, {message: 'La prix doit être au supérieure à 1 Fcfa'}),
-    niveau: z.string().optional(),
     description: z.string().optional(),
     actif: z.boolean().optional(),
     services: z.number().array().optional()

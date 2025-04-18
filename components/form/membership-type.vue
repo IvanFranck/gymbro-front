@@ -1,37 +1,15 @@
 <template>
     <div class="p-6">
         <h3 class="heading-title-2">
-            {{ Boolean(membershipTypeStore.membershipTypeToEdit) ? "Modifier l'offre" : "Créer une nouvelle offre d'abonnement" }}
+            {{ Boolean(membershipTypeStore.membershipTypeToEdit) ? "Modifier l'offre" : `Créer une nouvelle offre d'abonnement` }}
         </h3>
         <UForm :schema="CreateServiceSchema" :state="state" class="space-y-8 mt-6" @submit="onSubmit">
             <UFormField label="Nom" name="nom" class="w-full" required>
                 <UInput v-model="state.nom" class="w-full" />
             </UFormField>
-            
-            <UFormField label="Prix" name="prix" class="w-full" required>
-                <UInputNumber 
-                    v-model="state.prix" 
-                    :step="1000" :min="1000"
-                    size="lg" 
-                    :format-options="{
-                        style: 'currency',
-                        currency: 'XAF',
-                        currencyDisplay: 'symbol',
-                    }" 
-                    class="w-full" 
-                />
-            </UFormField>
-            
-            <UFormField label="Durée de l'abonnment" description="Compté en jours. Exemple: 30 jours pour 1 mois" name="prix" class="w-full" required>
-                <UInputNumber v-model="state.dureeJours" :min="1" size="lg" class="w-full"/>
-            </UFormField>
 
             <UFormField label="Services associés" name="services" class="w-full" required>
                 <USelect v-model="state.services" multiple :items="servicesOptions" size="lg" class="w-full"/>
-            </UFormField>
-
-            <UFormField label="Niveau" name="niveau" class="w-full" >
-                <USelect v-model="state.niveau" :items="membershipLevels" size="lg" class="w-full" />
             </UFormField>
 
             <UFormField label="Description" name="description" class="w-full">
@@ -39,7 +17,7 @@
             </UFormField>
 
             <div class="w-full flex justify-between">
-                <UButton @click="emits('close')" class="mt-4 cursor-pointer" color="neutral" size="lg">
+                <UButton class="mt-4 cursor-pointer" color="neutral" size="lg" @click="emits('close')">
                     Annuler
                 </UButton>
                 <UButton type="submit" class="mt-4 cursor-pointer" color="primary" size="lg">
@@ -65,14 +43,10 @@ const serviceStore = useServiceStore();
 
 const state = reactive<MembershipTypeDto>(membershipTypeStore.membershipTypeToEdit || {
     nom: '',
-    prix: 1000,
-    dureeJours: 1,
-    niveau: '',
     description: '',
     actif: true,
     services: []
 })
-const membershipLevels = ref(['Basic', 'Standard', 'Premium']);
 const servicesOptions = computed(()=> {
     const services = serviceStore.services?.data
     return services?.map((service) => ({

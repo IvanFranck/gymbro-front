@@ -1,6 +1,6 @@
 import { MEMBERSHIP_TYPES, MEMBERSHIP_TYPES_SERVICES } from "~/constants/api-routes";
 import type { GenericListResponce } from "~/types";
-import type { MembershipType, MembershipTypeDto, MembershipTypeList } from "~/types/membership-types";
+import type { MembershipTypeDto, MembershipTypeList } from "~/types/membership-types";
 
 export const useMembershipType = () => {
     async function handleFetchMembershipTypes(

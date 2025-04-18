@@ -28,7 +28,7 @@
             </UFormField>
 
             <div class="w-full flex justify-between">
-                <UButton @click="emits('close')" class="mt-4 cursor-pointer" color="neutral" size="lg">
+                <UButton class="mt-4 cursor-pointer" color="neutral" size="lg" @click="emits('close')">
                     Annuler
                 </UButton>
                 <UButton type="submit" class="mt-4 cursor-pointer" color="primary" size="lg">
@@ -60,8 +60,8 @@ const state = reactive<Partial<CreateServiceDto>>(serviceStore.serviceToEdit || 
 
 async function onSubmit(event: FormSubmitEvent<CreateServiceDto>) {
     const { serviceToEdit } = serviceStore;
-    const result = serviceToEdit 
-        ? await serviceStore.updateService(event.data, serviceToEdit.id) 
+    const result = serviceToEdit
+        ? await serviceStore.updateService(event.data, serviceToEdit.id)
         : await serviceStore.createService(event.data);
 
     if (result) {

@@ -1,28 +1,29 @@
 <template>
-    <UTable ref="table" v-model:pagination="pagination" :loading="membershipTypeStore.loading" loading-color="primary"
-      loading-animation="carousel" :data="membershipTypeStore.membershipTypes?.data" :pagination-options="{
-        getPaginationRowModel: getPaginationRowModel()
-      }" :columns="columns">
-      <template #action-cell="{ row }">
-        <UDropdownMenu :items="getDropDownActions(row.original)">
-          <UButton icon="i-lucide-ellipsis-vertical" color="neutral" variant="ghost" aria-label="Actions" />
-        </UDropdownMenu>
-      </template>
-      <template #empty>
-        <p class="mb-4">Aucune offre trouvée. Veillez recharger la page ou en créer une.</p>
-        <UButton color="primary" class="cursor-pointer" @click="emits('update:isModalOpen', true)">Nouvelle offre</UButton>
-      </template>
+  <UTable ref="table" v-model:pagination="pagination" :loading="membershipTypeStore.loading" loading-color="primary"
+    loading-animation="carousel" :data="membershipTypeStore.membershipTypes?.data" :pagination-options="{
+      getPaginationRowModel: getPaginationRowModel()
+    }" :columns="columns">
+    <template #action-cell="{ row }">
+      <UDropdownMenu :items="getDropDownActions(row.original)">
+        <UButton icon="i-lucide-ellipsis-vertical" color="neutral" variant="ghost" aria-label="Actions" />
+      </UDropdownMenu>
+    </template>
+    <template #empty>
+      <p class="mb-4">Aucune offre trouvée. Veillez recharger la page ou en créer une.</p>
+      <UButton color="primary" class="cursor-pointer" @click="emits('update:isModalOpen', true)">Nouvelle offre
+      </UButton>
+    </template>
 
-      <template #loading>
-        <p>chargement...</p>
-      </template>
-    </UTable>
-    <div class="flex justify-center border-t border-(--ui-border) pt-4">
-      <UPagination :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
-        :items-per-page="table?.tableApi?.getState().pagination.pageSize"
-        :total="table?.tableApi?.getFilteredRowModel().rows.length"
-        @update:page="(p) => table?.tableApi?.setPageIndex(p - 1)" />
-    </div>
+    <template #loading>
+      <p>chargement...</p>
+    </template>
+  </UTable>
+  <div class="flex justify-center border-t border-(--ui-border) pt-4">
+    <UPagination :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
+      :items-per-page="table?.tableApi?.getState().pagination.pageSize"
+      :total="table?.tableApi?.getFilteredRowModel().rows.length"
+      @update:page="(p) => table?.tableApi?.setPageIndex(p - 1)" />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -113,16 +114,16 @@ function getDropDownActions(membershipType: MembershipTypeList): DropdownMenuIte
       }
     ],
     [
-        {
-            label: 'Supprimer',
-            icon: 'i-lucide-trash',
-            color: 'error',
-            class: 'cursor-pointer',
-            onSelect: async () => {
-                await membershipTypeStore.deleteMembershipType(membershipType.id);
-                await membershipTypeStore.fetchMembershipTypes();
-            }
+      {
+        label: 'Supprimer',
+        icon: 'i-lucide-trash',
+        color: 'error',
+        class: 'cursor-pointer',
+        onSelect: async () => {
+          await membershipTypeStore.deleteMembershipType(membershipType.id);
+          await membershipTypeStore.fetchMembershipTypes();
         }
+      }
     ]
   ]
 }
@@ -138,37 +139,18 @@ const columns: TableColumn<MembershipTypeList>[] = [
     header: ({ column }) => getHeader(column, 'Nom'),
     cell: ({ row }) => {
       const value = row.getValue('nom');
-      return h('p', {class: "max-w-32 text-wrap", }, `${value}`);
+      return h('p', { class: "max-w-32 text-wrap", }, `${value}`);
     }
-  },
-  {
-    accessorKey: 'prix',
-    header: ({ column }) => getHeader(column, 'Prix'),
-    cell: ({ row }) => new Intl.NumberFormat('fr-CM', {
-        style: 'currency',
-        currency: 'XAF',
-        currencyDisplay: 'symbol',
-    }).format(row.getValue('prix'))
-  },
-  {
-    accessorKey: 'dureeJours',
-    header: ({ column }) => getHeader(column, 'Durée (jours)'),
-    cell: ({ row }) => row.getValue('dureeJours')
-  },
-  {
-    accessorKey: 'niveau',
-    header: ({ column }) => getHeader(column, 'Niveau'),
-    cell: ({ row }) => row.getValue('niveau')
   },
   {
     accessorKey: 'services',
     header: ({ column }) => getHeader(column, 'Services associés'),
     cell: ({ row }) => {
       const services: MembershipTypeService[] = row.getValue('services');
-      return h('div', { class: 'flex gap-2 flex-wrap'}, services.map(item => {
+      return h('div', { class: 'flex gap-2 flex-wrap' }, services.map(item => {
         const isActive = item.service.actif;
-        if(!isActive) return;
-        return h(UBadge, { class: 'capitalize', color: 'neutral', variant: 'subtle' }, ()=>item.service.nom)
+        if (!isActive) return;
+        return h(UBadge, { class: 'capitalize', color: 'neutral', variant: 'subtle' }, () => item.service.nom)
       }
       ))
     }
@@ -178,7 +160,7 @@ const columns: TableColumn<MembershipTypeList>[] = [
     header: ({ column }) => getHeader(column, 'Description'),
     cell: ({ row }) => {
       const value = row.getValue('description');
-      return h('p', {class: "max-w-40 text-wrap", }, `${value}`);
+      return h('p', { class: "max-w-40 text-wrap", }, `${value}`);
     }
   },
   {
