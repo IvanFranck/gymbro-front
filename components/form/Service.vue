@@ -58,7 +58,7 @@ async function onSubmit(event: FormSubmitEvent<CreateServiceDto>) {
         : await serviceStore.createService(event.data);
 
     if (result) {
-        await serviceStore.fetchServices();
+        await serviceStore.fetchServices({});
         emits('close');
     }
 }

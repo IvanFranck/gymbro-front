@@ -29,8 +29,8 @@ const open = ref(false);
 const serviceStore = useServiceStore();
 
 async function handleSearch(search: string | number) {
-  if (typeof(search) === 'string')
-    await serviceStore.fetchServices(search)
+  if (typeof (search) === 'string')
+    await serviceStore.fetchServices({ search })
 }
 
 function toggleModal() {
@@ -38,7 +38,7 @@ function toggleModal() {
   serviceStore.setServiceToEdit(null);
 }
 
-function closeModal(){
+function closeModal() {
   open.value = false;
 }
 
@@ -48,9 +48,9 @@ function handleCloseModal() {
 
 watchDebounced(
   search,
-  async () => await serviceStore.fetchServices(search.value),
+  async () => await serviceStore.fetchServices({ search: search.value }),
   { debounce: 3000, maxWait: 5000 },
 )
 
-await serviceStore.fetchServices();
+await serviceStore.fetchServices({});
 </script>
