@@ -55,11 +55,8 @@ export const usePaymentMethod = () => {
 
 
     async function deletePaymentMethod(id: number) {
-        const { error: fetchError } = await useApi<PaymentMethod>(`${PAYMENT_METHODS}/${id}`, {
+        const { error: fetchError } = await useApi<PaymentMethod>(`${PAYMENT_METHODS}/${id}/deactivate`, {
             method: "PATCH",
-            body: {
-                actif: false
-            }
         });
 
         if (fetchError.value)

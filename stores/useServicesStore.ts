@@ -4,7 +4,6 @@ import type { CreateServiceDto, Service, UpdateServiceDto } from "~/types/servic
 const {
     fetchServices: getAllServices,
     createService: addService,
-    toggleServiceStatus: changeServiceStatus,
     updateService: editService,
     deleteService: handleDeleteService,
 } = useServices();
@@ -17,17 +16,17 @@ export const useServiceStore = defineStore('serviceStore', () => {
     const limit = ref(10);
     const serviceToEdit = ref<Service | null>(null);
 
-    async function fetchServices(search?: string) {
+    async function fetchServices(p?: number, l?: number, search?: string) {
         loading.value = true
         try {
-            const result = await getAllServices(page.value, limit.value, search);
+            const result = await getAllServices(p ?? page.value, l ?? limit.value, search);
             if (result) {
                 services.value = result;
             }
 
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la récupération des services"
+                error.value = "Une erreur est survenue lors de la récupération des services. Veillez actualiser la page"
                 useToast().add({
                     title: error.value,
                     color: "error"
@@ -51,7 +50,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
             }
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la création du service"
+                error.value = "Une erreur est survenue lors de la création du service. Veillez réessayer"
                 useToast().add({
                     title: error.value,
                     color: "error",
@@ -75,7 +74,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
             }
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la modification du service"
+                error.value = "Une erreur est survenue lors de la modification du service. Veillez réessayer"
                 useToast().add({
                     title: error.value,
                     color: "error",
@@ -107,30 +106,6 @@ export const useServiceStore = defineStore('serviceStore', () => {
         }
     }
 
-    async function toggleServiceStatus(serviceId: number, status: boolean) {
-        loading.value = true
-        try {
-            const result = await changeServiceStatus(serviceId, status);
-            if (result) {
-                useToast().add({
-                    title: "Statut du service mis à jour avec succès",
-                    color: "success"
-                });
-                return result;
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la mise à jour du statut du service"
-                useToast().add({
-                    title: error.value,
-                    color: "error",
-                })
-            }
-        } finally {
-            loading.value = false;
-        }
-    }
-
     function setServiceToEdit(service: Service | null) {
         serviceToEdit.value = service;
     }
@@ -141,7 +116,6 @@ export const useServiceStore = defineStore('serviceStore', () => {
         updateService,
         deleteService,
         setServiceToEdit,
-        toggleServiceStatus,
         serviceToEdit,
         services,
         loading

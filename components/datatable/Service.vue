@@ -103,17 +103,6 @@ function getDropDownActions(service: Service): DropdownMenuItem[][] {
   return [
     [
       {
-        label: `${service.actif ? 'Désactiver' : 'Activer'}`,
-        icon: service.actif ? 'i-lucide-x' : 'i-lucide-check',
-        class: 'cursor-pointer',
-        onSelect: async () => {
-          await servicesStore.toggleServiceStatus(service.id, !service.actif);
-          await servicesStore.fetchServices();
-        }
-      }
-    ],
-    [
-      {
         label: 'Modifier',
         icon: 'i-lucide-edit',
         class: 'cursor-pointer',
@@ -172,16 +161,6 @@ const columns: TableColumn<Service>[] = [
     cell: ({ row }) => {
       const value = row.getValue('dureeStandard');
       return value ?? '/'
-    }
-  },
-  {
-    accessorKey: "actif",
-    header: ({ column }) => getHeader(column, 'Statut'),
-    cell: ({ row }) => {
-      const status = row.getValue('actif') ? 'Actif' : 'désactivé';
-      const color = row.getValue('actif') ? 'success' : 'error';
-
-      return h(UBadge, { class: 'capitalize', color, variant: 'subtle' }, () => status)
     }
   },
   {

@@ -20,15 +20,8 @@
                 <UInputNumber v-model="state.capaciteMax" :min="0" class="w-full" />
             </UFormField>
 
-            <UFormField v-if="serviceStore.serviceToEdit" name="actif" class="w-full">
-                <p class="flex gap-2 items-center">
-                    <USwitch v-model="state.actif" />
-                    <span>Activer</span>
-                </p>
-            </UFormField>
-
             <div class="w-full flex justify-between">
-                <UButton @click="emits('close')" class="mt-4 cursor-pointer" color="neutral" size="lg">
+                <UButton class="mt-4 cursor-pointer" color="neutral" size="lg" @click="emits('close')">
                     Annuler
                 </UButton>
                 <UButton type="submit" class="mt-4 cursor-pointer" color="primary" size="lg">
@@ -42,8 +35,7 @@
 <script setup lang="ts">
 import { USwitch } from '#components';
 import type { FormSubmitEvent } from '@nuxt/ui';
-import type { GenericListResponce } from '~/types';
-import { CreateServiceSchema, type CreateServiceDto, type Service } from '~/types/services';
+import { CreateServiceSchema, type CreateServiceDto } from '~/types/services';
 
 const emits = defineEmits<{
     (e: 'close'): void;
@@ -61,8 +53,8 @@ const state = reactive<Partial<CreateServiceDto>>(serviceStore.serviceToEdit || 
 
 async function onSubmit(event: FormSubmitEvent<CreateServiceDto>) {
     const { serviceToEdit } = serviceStore;
-    const result = serviceToEdit 
-        ? await serviceStore.updateService(event.data, serviceToEdit.id) 
+    const result = serviceToEdit
+        ? await serviceStore.updateService(event.data, serviceToEdit.id)
         : await serviceStore.createService(event.data);
 
     if (result) {
