@@ -20,13 +20,6 @@
                 <UInputNumber v-model="state.capaciteMax" :min="0" class="w-full" />
             </UFormField>
 
-            <UFormField v-if="serviceStore.serviceToEdit" name="actif" class="w-full">
-                <p class="flex gap-2 items-center">
-                    <USwitch v-model="state.actif" />
-                    <span>Activer</span>
-                </p>
-            </UFormField>
-
             <div class="w-full flex justify-between">
                 <UButton class="mt-4 cursor-pointer" color="neutral" size="lg" @click="emits('close')">
                     Annuler
