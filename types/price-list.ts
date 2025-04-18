@@ -17,7 +17,7 @@ export interface PriceList extends PricingItem {
 
 export const PriceListSchema = z.object({
     prix: z.number().min(0, { message: "Le prix est requis" }),
-    genre: z.enum(["Homme", "Femme"], { errorMap: () => ({ message: "Le genre est requis" }) }),
+    genre: z.string({message: 'le genre est requis'}),
     dureeJours: z.number().min(1, { message: "La durée est requise" }),
     typeAbonnementId: z.number(),
     actif: z.boolean().optional(),

@@ -67,6 +67,6 @@ async function onSubmit(event: FormSubmitEvent<MembershipTypeDto>) {
     }
 }
 
-await serviceStore.fetchServices(1, 100);
+await serviceStore.fetchServices({p: 1, l: 100});
 
 </script>

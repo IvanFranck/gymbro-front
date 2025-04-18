@@ -2,7 +2,7 @@ import { PRICING } from "~/constants/api-routes"
 import type { PriceList, PriceListDto, PricingItem } from "~/types/price-list"
 
 export const usePriceList = () => {
-    async function handleFetchPriceList(params: {
+    async function handleFetchPriceList(params?: {
         typeAbonnementId: number,
         prixMin: number,
         prixMax: number,

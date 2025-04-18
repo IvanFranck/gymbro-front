@@ -11,7 +11,7 @@ export const usePriceListStore = defineStore('priceListStore', () => {
     const error = ref<string | null>(null);
     const pricingItemEdit = ref<PricingItem | null>(null);
 
-    async function fetchPriceList(params: {
+    async function fetchPriceList(params?: {
         typeAbonnementId: number,
         prixMin: number,
         prixMax: number,
@@ -72,7 +72,10 @@ export const usePriceListStore = defineStore('priceListStore', () => {
     return {
         fetchPriceList,
         createPricingItem,
-        setPricingItemEdit
+        setPricingItemEdit,
+        loading,
+        priceList,
+        pricingItemEdit
     }
 })
 
