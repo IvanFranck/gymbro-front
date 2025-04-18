@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { UBadge, UButton, UDropdownMenu } from '#components';
+import { UButton, UDropdownMenu } from '#components';
 import type { DropdownMenuItem, TableColumn } from '@nuxt/ui';
 import { getPaginationRowModel, type Column } from '@tanstack/vue-table';
 import type { Service } from '~/types/services';
@@ -124,7 +124,7 @@ function getDropDownActions(service: Service): DropdownMenuItem[][] {
             class: 'cursor-pointer',
             onSelect: async () => {
                 await servicesStore.deleteService(service.id);
-                await servicesStore.fetchServices();
+                await servicesStore.fetchServices({});
             }
         }
     ]

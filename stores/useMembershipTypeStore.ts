@@ -26,7 +26,7 @@ export const useMembershipTypeStore = defineStore('membershipTypeStore', () => {
 
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la récupération des offres d'abonnement. Veillez actualiser la page"
+                error.value = "Une erreur est survenue lors de la récupération des types d'offres d'abonnement. Veillez actualiser la page"
                 useToast().add({
                     title: error.value,
                     color: "error"
@@ -43,14 +43,14 @@ export const useMembershipTypeStore = defineStore('membershipTypeStore', () => {
             const result = await handleCreateMembershipType(membershipType);
             if (result) {
                 useToast().add({
-                    title: "Offre créée avec succès",
+                    title: "Type d'offre créé avec succès",
                     color: "success"
                 });
                 return result;
             }
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la création de l'offre. Veillez réessayer"
+                error.value = "Une erreur est survenue lors de la création du type d'offre. Veillez réessayer"
                 useToast().add({
                     title: error.value,
                     color: "error",
@@ -67,14 +67,14 @@ export const useMembershipTypeStore = defineStore('membershipTypeStore', () => {
             const result = await handleUpdateMembershipType(membershipType, id);
             if (result) {
                 useToast().add({
-                    title: "Offre modifiée avec succès",
+                    title: "Type d'offre modifié avec succès",
                     color: "success"
                 });
                 return result;
             }
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la modification de l'offre d'abonnement. Veillez réessayer"
+                error.value = "Une erreur est survenue lors de la modification du type d'offre d'abonnement. Veillez réessayer"
                 useToast().add({
                     title: error.value,
                     color: "error",
@@ -95,7 +95,7 @@ export const useMembershipTypeStore = defineStore('membershipTypeStore', () => {
             });
         } catch (err) {
             if (err instanceof Error) {
-                error.value = "Une erreur est survenue lors de la suppression de l'offre. Veillez réessayer"
+                error.value = "Une erreur est survenue lors de la suppression du type d'offre. Veillez réessayer"
                 useToast().add({
                     title: error.value,
                     color: "error",

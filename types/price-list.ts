@@ -1,14 +1,17 @@
 import * as z from "zod"
 import type { MembershipType } from "./membership-types"
 
-export interface PriceList {
+export interface PricingItem {
     id: number,
     prix: number,
     genre: string,
     dureeJours: number,
     actif: boolean,
+    typeAbonnementId: number,
     createdAt: string
     updatedAt: string
+}
+export interface PriceList extends PricingItem {
     typeAbonnement: MembershipType
 }
 
