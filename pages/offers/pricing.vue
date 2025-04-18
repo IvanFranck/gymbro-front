@@ -1,0 +1,1 @@
+<template>offres pricing</template>

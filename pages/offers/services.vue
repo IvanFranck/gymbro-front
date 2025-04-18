@@ -1,0 +1,3 @@
+<template>
+    offers/services
+</template>
