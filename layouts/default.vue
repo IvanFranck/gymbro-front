@@ -19,7 +19,7 @@
       <main class="flex-grow p-6">
         <LayoutBreadcrumb />
         <div class="mt-6">
-          <slot />
+          <NuxtPage/>
         </div>
       </main>
 

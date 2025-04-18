@@ -1,3 +1,5 @@
 <template>
-    settings/payment-methods
+    <div>
+        settings/payment-methods
+    </div>
 </template>

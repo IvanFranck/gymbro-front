@@ -1,1 +1,5 @@
-<template>offres pricing</template>
+<template>
+    <div>
+        offres pricing
+    </div>
+</template>

@@ -20,7 +20,6 @@ const items = ref<NavigationMenuItem[][]>([
             label: 'Tableau de bord',
             icon: 'i-lucide-book-open',
             to: '/',
-            active: true,
         },
         {
             label: 'Clients',

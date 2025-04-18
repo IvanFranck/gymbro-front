@@ -1,3 +1,5 @@
 <template>
-    offers/services
+    <div>
+        offers/services
+    </div>
 </template>
