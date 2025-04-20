@@ -1,34 +1,30 @@
 <template>
     <div class="p-6">
         <h3 class="heading-title-2">
-            {{ Boolean(membershipTypeStore.membershipTypeToEdit) ? "Modifier l'offre" : "Créer une nouvelle offre d'abonnement" }}
+            {{ Boolean(membershipTypeStore.membershipTypeToEdit) ? "Modifier l'offre" : `Créer une nouvelle offre
+            d'abonnement` }}
         </h3>
         <UForm :schema="CreateServiceSchema" :state="state" class="space-y-8 mt-6" @submit="onSubmit">
 
             <UFormField label="Type d'offre" name="typeAbonnementId" class="w-full" required>
-                <USelect v-model="state.typeAbonnementId" :items="membershipTypesOptions" size="lg" class="w-full"/>
-            </UFormField>
-            
-            <UFormField label="Prix" name="prix" class="w-full" required>
-                <UInputNumber 
-                    v-model="state.prix" 
-                    :step="1000" :min="1000"
-                    size="lg" 
-                    :format-options="{
-                        style: 'currency',
-                        currency: 'XAF',
-                        currencyDisplay: 'symbol',
-                    }" 
-                    class="w-full" 
-                />
+                <USelect v-model="state.typeAbonnementId" :items="membershipTypesOptions" size="lg" class="w-full" />
             </UFormField>
 
             <UFormField label="Genre" name="genre" class="w-full" required>
-                <USelect v-model="state.genre" :items="genderOptions" size="lg" class="w-full"/>
+                <USelect v-model="state.genre" :items="genderOptions" size="lg" class="w-full" />
             </UFormField>
-            
-            <UFormField label="Durée de l'abonnment" description="Compté en jours. Exemple: 30 jours pour 1 mois" name="prix" class="w-full" required>
-                <UInputNumber v-model="state.dureeJours" :min="1" size="lg" class="w-full"/>
+
+            <UFormField label="Prix" name="prix" class="w-full" required>
+                <UInputNumber v-model="state.prix" :step="1000" :min="1000" size="lg" :format-options="{
+                    style: 'currency',
+                    currency: 'XAF',
+                    currencyDisplay: 'symbol',
+                }" class="w-full" />
+            </UFormField>
+
+            <UFormField label="Durée de l'abonnment" description="Compté en jours. Exemple: 30 jours pour 1 mois"
+                name="prix" class="w-full" required>
+                <UInputNumber v-model="state.dureeJours" :min="1" size="lg" class="w-full" />
             </UFormField>
 
             <div class="w-full flex justify-between">
@@ -64,32 +60,27 @@ const state = reactive<PriceListDto>(priceListStore.pricingItemEdit || {
     actif: true,
 })
 const genderOptions = ref(['Homme', 'Femme'])
-const membershipTypesOptions = computed(()=> {
+const membershipTypesOptions = computed(() => {
     const items = membershipTypeStore.membershipTypes?.data
     return items?.map((item) => {
-        let services: string | null = null;
-        if(item.services && item.services.length > 0){
-            services = item.services.map(s => s.service.nom).join(', ');
-        }
-        const label = services ? `${item.nom} (${services})` : item.nom;
-
         return {
-            label,
+            label: item.nom,
             value: item.id
         }
     })
 })
 
 async function onSubmit(event: FormSubmitEvent<PriceListDto>) {
+    console.log('submit form')
     const { pricingItemEdit } = priceListStore;
-    // const result = pricingItemEdit 
-    //     ? await priceListStore.createPricingItem(event.data, membershipTypeToEdit.id) 
-    //     : await membershipTypeStore.createMembershipType(event.data);
+    const result = pricingItemEdit
+        ? await priceListStore.updatePricingItem(event.data, pricingItemEdit.id)
+        : await priceListStore.createPricingItem(event.data);
 
-    // if (result) {
+    if (result) {
         await priceListStore.fetchPriceList();
         emits('close');
-    // }
+    }
 }
 
 await membershipTypeStore.fetchMembershipTypes();
