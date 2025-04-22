@@ -1,10 +1,10 @@
 <template>
     <div class="p-6">
         <h3 class="heading-title-2">
-            {{ Boolean(membershipTypeStore.membershipTypeToEdit) ? "Modifier l'offre" : `Créer une nouvelle offre
+            {{ Boolean(priceListStore.pricingItemEdit) ? "Modifier un tarif" : `Créer un nouvel tarif
             d'abonnement` }}
         </h3>
-        <UForm :schema="CreateServiceSchema" :state="state" class="space-y-8 mt-6" @submit="onSubmit">
+        <UForm :schema="PriceListSchema" :state="state" class="space-y-8 mt-6" @submit="onSubmit">
 
             <UFormField label="Type d'offre" name="typeAbonnementId" class="w-full" required>
                 <USelect v-model="state.typeAbonnementId" :items="membershipTypesOptions" size="lg" class="w-full" />
@@ -40,10 +40,8 @@
 </template>
 
 <script setup lang="ts">
-import { USelect } from '#components';
 import type { FormSubmitEvent } from '@nuxt/ui';
-import type { PriceListDto } from '~/types/price-list';
-import { CreateServiceSchema } from '~/types/services';
+import { PriceListSchema, type PriceListDto } from '~/types/price-list';
 
 const emits = defineEmits<{
     (e: 'close'): void;
