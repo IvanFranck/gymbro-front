@@ -109,13 +109,13 @@ export const useMembershipTypeStore = defineStore('membershipTypeStore', () => {
 
     function setMembershipTypeToEdit(value: MembershipTypeList | null) {
         if (value) {
-            const { services, ...others} = value;
-            
+            const { services, ...others } = value;
+
             membershipTypeToEdit.value = {
                 ...others,
                 services: services.map(item => item.service.id)
             };
-        }else{
+        } else {
             membershipTypeToEdit.value = null;
         }
     }

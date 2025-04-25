@@ -33,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { USwitch } from '#components';
 import type { FormSubmitEvent } from '@nuxt/ui';
 import { CreateServiceSchema, type CreateServiceDto } from '~/types/services';
 

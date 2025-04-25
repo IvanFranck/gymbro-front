@@ -41,8 +41,27 @@ export const usePriceList = () => {
             return data.value
     }
 
+    async function handleUpdatePricingItem(
+        dto: PriceListDto,
+        id: number
+    ) {
+        const { data, error: fetchError } = await useApi<PricingItem>(`${PRICING}/${id}`, {
+            method: "PATCH",
+            body: dto
+        });
+
+        if (fetchError.value) {
+            console.error('error update princing item', fetchError.value)
+            throw fetchError.value
+        }
+
+        if (data.value)
+            return data.value
+    }
+
     return {
         handleFetchPriceList,
-        handleCreatePrincingItem
+        handleCreatePrincingItem,
+        handleUpdatePricingItem
     }
 }

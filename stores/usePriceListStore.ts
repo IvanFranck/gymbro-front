@@ -2,7 +2,8 @@ import type { PriceList, PriceListDto, PricingItem } from "~/types/price-list";
 
 const {
     handleCreatePrincingItem,
-    handleFetchPriceList
+    handleFetchPriceList,
+    handleUpdatePricingItem,
 } = usePriceList();
 
 export const usePriceListStore = defineStore('priceListStore', () => {
@@ -16,7 +17,7 @@ export const usePriceListStore = defineStore('priceListStore', () => {
         prixMin: number,
         prixMax: number,
         genre: string
-    }){
+    }) {
         loading.value = true
         try {
             const result = await handleFetchPriceList(params);
@@ -34,9 +35,9 @@ export const usePriceListStore = defineStore('priceListStore', () => {
         } finally {
             loading.value = false;
         }
-    }   
+    }
 
-    async function createPricingItem  (dto: PriceListDto) {
+    async function createPricingItem(dto: PriceListDto) {
         loading.value = true
         try {
             const result = await handleCreatePrincingItem(dto);
@@ -60,11 +61,35 @@ export const usePriceListStore = defineStore('priceListStore', () => {
         }
     }
 
+    async function updatePricingItem(dto: PriceListDto, id: number) {
+        loading.value = true;
+        try {
+            const result = await handleUpdatePricingItem(dto, id);
+            if (result) {
+                useToast().add({
+                    title: "Tarif modifié avec succès",
+                    color: "success"
+                });
+                return result;
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                error.value = "Une erreur est survenue lors de la modification de l'offre tarifaire. Veillez réessayer"
+                useToast().add({
+                    title: error.value,
+                    color: "error",
+                })
+            }
+        } finally {
+            loading.value = false;
+        }
+    }
+
     function setPricingItemEdit(value: PriceList | null) {
         if (value) {
-            const { typeAbonnement, ...others} = value;
+            const { typeAbonnement, ...others } = value;
             pricingItemEdit.value = others;
-        }else{
+        } else {
             pricingItemEdit.value = null;
         }
     }
@@ -73,6 +98,7 @@ export const usePriceListStore = defineStore('priceListStore', () => {
         fetchPriceList,
         createPricingItem,
         setPricingItemEdit,
+        updatePricingItem,
         loading,
         priceList,
         pricingItemEdit

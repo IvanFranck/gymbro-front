@@ -1,1 +1,0 @@
-<template>offres</template>

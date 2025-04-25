@@ -1,7 +1,8 @@
 <template>
     <div class="p-6">
         <h3 class="heading-title-2">
-            {{ Boolean(membershipTypeStore.membershipTypeToEdit) ? "Modifier l'offre" : `Créer une nouvelle offre d'abonnement` }}
+            {{ Boolean(membershipTypeStore.membershipTypeToEdit) ? "Modifier l'offre" : `Créer une nouvelle offre
+            d'abonnement` }}
         </h3>
         <UForm :schema="CreateServiceSchema" :state="state" class="space-y-8 mt-6" @submit="onSubmit">
             <UFormField label="Nom" name="nom" class="w-full" required>
@@ -9,7 +10,7 @@
             </UFormField>
 
             <UFormField label="Services associés" name="services" class="w-full" required>
-                <USelect v-model="state.services" multiple :items="servicesOptions" size="lg" class="w-full"/>
+                <USelect v-model="state.services" multiple :items="servicesOptions" size="lg" class="w-full" />
             </UFormField>
 
             <UFormField label="Description" name="description" class="w-full">
@@ -47,7 +48,7 @@ const state = reactive<MembershipTypeDto>(membershipTypeStore.membershipTypeToEd
     actif: true,
     services: []
 })
-const servicesOptions = computed(()=> {
+const servicesOptions = computed(() => {
     const services = serviceStore.services?.data
     return services?.map((service) => ({
         label: service.nom,
@@ -56,9 +57,10 @@ const servicesOptions = computed(()=> {
 })
 
 async function onSubmit(event: FormSubmitEvent<MembershipTypeDto>) {
+    event.preventDefault();
     const { membershipTypeToEdit } = membershipTypeStore;
-    const result = membershipTypeToEdit 
-        ? await membershipTypeStore.updateMembershipType(event.data, membershipTypeToEdit.id) 
+    const result = membershipTypeToEdit
+        ? await membershipTypeStore.updateMembershipType(event.data, membershipTypeToEdit.id)
         : await membershipTypeStore.createMembershipType(event.data);
 
     if (result) {
@@ -67,6 +69,6 @@ async function onSubmit(event: FormSubmitEvent<MembershipTypeDto>) {
     }
 }
 
-await serviceStore.fetchServices({p: 1, l: 100});
+await serviceStore.fetchServices({ p: 1, l: 100 });
 
 </script>
