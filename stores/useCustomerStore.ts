@@ -1,5 +1,6 @@
 import type { CustomerDto, CustomerList } from "~/types/customers"
 import { useCustomer } from "~/composables/useCustomer"
+import type { GenericListResponce } from "~/types";
 
 const {
     handleFetchCustomers,
@@ -9,7 +10,7 @@ const {
 } = useCustomer();  
 
 export const useCustomerStore = defineStore('customerStore', () => {
-    const customers = ref<CustomerList>()
+    const customers = ref<GenericListResponce<CustomerList[]>>()
     const loading = ref(false)
     const error = ref<string | null>(null)
     const page = ref(1)
@@ -40,7 +41,11 @@ export const useCustomerStore = defineStore('customerStore', () => {
         try {
             const result = await handleCreateCustomer(customer);
             if (result) {
-                customers.value = result;
+                useToast().add({
+                    title: "Client créé avec succès",
+                    color: "success"
+                });
+                return result;
             }
         } catch (err) {
             if (err instanceof Error) {
@@ -56,7 +61,11 @@ export const useCustomerStore = defineStore('customerStore', () => {
         try {
             const result = await handleUpdateCustomer(customer, id);
             if (result) {
-                customers.value = result;
+                useToast().add({
+                    title: "Client modifié avec succès",
+                    color: "success"
+                });
+                return result;
             }
         } catch (err) {
             if (err instanceof Error) {

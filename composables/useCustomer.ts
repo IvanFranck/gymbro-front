@@ -1,4 +1,5 @@
 import { CUSTOMERS } from "~/constants/api-routes"
+import type { GenericListResponce } from "~/types";
 import type { CustomerDto, CustomerList } from "~/types/customers"
 
 export const useCustomer = () => {
@@ -7,7 +8,7 @@ export const useCustomer = () => {
         limit: number,
         search?: string,
     ) {
-        const { data, error: fetchError } = await useApi<CustomerList>(CUSTOMERS, {
+        const { data, error: fetchError } = await useApi<GenericListResponce<CustomerList[]>>(CUSTOMERS, {
             params: {
                 search,
                 page,
